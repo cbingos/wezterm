@@ -1,4 +1,5 @@
 require("events.tab-title").setup()
+-- require("events.new-tab-button").setup()
 local wezterm = require 'wezterm'
 local config = {}
 local platform = require('utils.platform')
@@ -23,7 +24,7 @@ config.integrated_title_button_style = "Windows"
 config.integrated_title_button_color = "auto"
 config.integrated_title_button_alignment = "Right"
 -- 初始大小
-config.initial_cols = 112
+config.initial_cols = 117
 config.initial_rows = 33
 -- 滚动条尺寸为 15 ，其他方向不需要 pad
 -- window_background_gradient = {
@@ -82,9 +83,15 @@ config.launch_menu = {
   { label = 'screen_openui',   args = {'/usr/bin/screen','-R','openui'}, },
 }
 local act = wezterm.action
-
 wezterm.on('update-right-status', function(window, pane)
-  window:set_right_status(window:active_workspace())
+  -- window:set_right_status(window:active_workspace())
+  window:set_right_status(wezterm.format {
+        { Attribute = { Underline = 'Single' } },
+        -- { Attribute = { Italic = true } },
+        { Background = { Color = '#EBEBE9' } },
+        { Foreground = { Color = '#e4736b'} },
+        { Text = window:active_workspace() },
+  })
 end)
 config.keys = {
   -- 新增workspace and 切换: ctrl+shift+w , ctrl+shift+n
@@ -112,8 +119,8 @@ config.keys = {
       end),
     },
   },
-  { key = 'N', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(1) },
-  { key = 'P', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(-1) },
+  { key = 'L', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(1) },
+  { key = 'H', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(-1) },
   { key = 'w', mods = 'ALT', action = wezterm.action.ShowLauncher },-- 打开launcher
 }
 return config
