@@ -5,7 +5,7 @@ local config = {}
 local platform = require('utils.platform')
 
 local font = 'JetBrainsMono Nerd Font'
-local font_size = platform().is_mac and 14 or 10
+local font_size = platform().is_mac and 15 or 15
 if wezterm.config_builder then
   c = wezterm.config_builder()
 end
@@ -18,6 +18,7 @@ config.window_close_confirmation = 'NeverPrompt'
 config.adjust_window_size_when_changing_font_size = false
 -- 透明背景
 config.window_background_opacity = 1
+
 -- 取消 Windows 原生标题栏
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.integrated_title_button_style = "Windows"
@@ -40,7 +41,7 @@ config.window_padding = {
 }
 config.window_frame = {
     active_titlebar_bg = "#EBEBE9",
-    inactive_titlebar_bg = "#0F2536",
+    inactive_titlebar_bg = "#ffffff",
     -- font = fonts.font,
     -- font_size = fonts.font_size,
 }
@@ -62,9 +63,11 @@ config.freetype_render_target = 'Normal' ---@type 'Normal'|'Light'|'Mono'|'Horiz
 -- 配色
 config.term = "xterm-256color"
 -- https://wezfurlong.org/wezterm/colorschemes/o/index.html#one-light-base16
-local materia = wezterm.color.get_builtin_schemes()['OneHalfLight']
-materia.scrollbar_thumb = '#cccccc' -- 更明显的滚动条
-config.colors = materia
+local wezterm_color = wezterm.color.get_builtin_schemes()['Google (light) (terminal.sexy)'] 
+wezterm_color.scrollbar_thumb = '#cccccc' -- 更明显的滚动条
+-- wezterm_color.background = '#ffffff' -- 自定义背景
+config.colors = wezterm_color
+config.colors_scheme = wezterm_color
 -- 启用滚动条
 config.enable_scroll_bar = true
 -- config.default_cursor_style = "BlinkingBlock"
@@ -77,7 +80,7 @@ config.default_prog = { '/opt/homebrew/bin/fish' }
 -- 启动菜单的一些启动项
 config.launch_menu = {
   -- screen -S 74889 -X quit
-  -- { label = 'cd_iching',   args = {'cd',}, cwd = '/Users/abc/flutter_pj/flutter_ex'},
+  { label = 'screen_proxy',   args = {'/usr/bin/screen','/opt/homebrew/bin/wstunnel', 'client', '--http-upgrade-path-prefix','h3GywpDrP6gJEdZ6xbJbZZVFmvFZDCa4KcRb','-L', 'socks5://127.0.0.1:10080', 'https://abc.rr.nu:18888',}, },
   { label = 'screen_iching',   args = {'/usr/bin/screen','-R','iching'}, },
   { label = 'screen_trade',   args = {'/usr/bin/screen','-R','trade'}, },
   { label = 'screen_openui',   args = {'/usr/bin/screen','-R','openui'}, },
@@ -119,8 +122,12 @@ config.keys = {
       end),
     },
   },
-  { key = 'L', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(1) },
-  { key = 'H', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(-1) },
+  { key = 'l', mods = 'ALT', action = act.SwitchWorkspaceRelative(1) },
+  { key = 'h', mods = 'ALT', action = act.SwitchWorkspaceRelative(-1) },
   { key = 'w', mods = 'ALT', action = wezterm.action.ShowLauncher },-- 打开launcher
+  -- 重新定义左右分割
+  { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },},
+  -- 重新定义上下分割
+  { key = 's', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },},
 }
 return config

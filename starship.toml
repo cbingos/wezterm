@@ -1,0 +1,180 @@
+#  brew install starship
+# 根据 schema 提供自动补全
+"$schema" = 'https://starship.rs/config-schema.json'
+# 在提示符之间插入空行
+add_newline = false
+# format = """$time $all"""
+[username]
+format = " [╭─$user]($style)@"
+style_user = "bold green"
+style_root = "bold green"
+disabled = false
+show_always = true
+
+# Second param
+[hostname]
+format = "[$hostname]($style) in "
+# style = "bold dimmed red"
+trim_at = "-"
+ssh_only = false
+disabled = true
+
+# Third param
+[directory]
+# style = "purple"
+style = "bold green"
+truncation_length = 0
+truncate_to_repo = true
+truncation_symbol = "repo: "
+
+# Before all the version info (python, nodejs, php, etc.)
+[git_status]
+# style = "white"
+style = "bold green"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+deleted = "x"
+
+# Last param in the first line/row
+[cmd_duration]
+min_time = 1
+format = "took [$duration]($style)"
+disabled = false
+
+
+## SECOND LINE/ROW: Prompt
+# Somethere at the beginning
+[battery]
+full_symbol = " "
+charging_symbol = " "
+discharging_symbol = " "
+disabled = true
+
+[[battery.display]]  # "bold red" style when capacity is between 0% and 10%
+threshold = 15
+style = "bold red"
+disabled = true
+
+[[battery.display]]  # "bold yellow" style when capacity is between 10% and 30%
+threshold = 50
+style = "bold yellow"
+disabled = true
+
+[[battery.display]]  # "bold green" style when capacity is between 10% and 30%
+threshold = 80
+style = "bold green"
+disabled = true
+
+# Prompt: optional param 1
+[time]
+format = " 🕙 $time($style)"
+time_format = "%Y-%m-%d %T"
+# style = "bright-white"
+disabled = true
+
+# Prompt: param 2 └─
+[character]
+success_symbol = '[ ➜](bold green)'
+error_symbol = '[ ➜](bold red)'
+# success_symbol = " [╰─λ](bold red)"
+# error_symbol = " [×](bold red)"
+# SYMBOLS
+[status]
+symbol = "🔴"
+format = '[\[$symbol$status_common_meaning$status_signal_name$status_maybe_int\]]($style)'
+map_symbol = true
+disabled = false
+
+[aws]
+symbol = "  "
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+#[directory]
+#read_only = " "
+
+[docker_context]
+symbol = " "
+format = "[$symbol$context]($style) "
+style = "blue bold"
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+detect_folders = []
+disabled = false
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[haskell]
+symbol = "λ "
+
+[memory_usage]
+symbol = " "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[perl]
+symbol = " "
+
+[php]
+symbol = " "
+
+[python]
+symbol = " "
+#pyenv_version_name = true
+format = '[${symbol}python (${version} )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+pyenv_prefix = "venv "
+python_binary = ["/Users/abc/Documents/rye/nvim_py/.venv/bin/python3", "/Users/abc/Documents/rye/nvim_py/.venv/bin/python"]
+detect_extensions = ["py"]
+version_format = "v${raw}"
+
+[ruby]
+symbol = " "
+
+[rust]
+# symbol = " "
+format = "rust: [🦀 $version](red bold)"
+[scala]
+symbol = " "
+
+[shlvl]
+symbol = " "
+
+[swift]
+symbol = "ﯣ "
+
+[nodejs]
+format = "[ Node.js $version](bold green) "
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+# 禁用 'package' 组件，将其隐藏
+[package]
+disabled = true
