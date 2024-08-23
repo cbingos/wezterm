@@ -44,7 +44,7 @@ config.window_frame = {
     -- font_size = fonts.font_size,
 }
 -- tab bar
--- config.tab_bar_background = "#ffffff"
+config.tab_bar_background = "#ffffff"
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = true
@@ -76,10 +76,44 @@ config.default_prog = { '/opt/homebrew/bin/fish' }
 -- 启动菜单的一些启动项
 config.launch_menu = {
   -- screen -S 74889 -X quit
-  { label = 'cd_iching',   args = {'cd',}, cwd = '/Users/abc/flutter_pj/flutter_ex'},
+  -- { label = 'cd_iching',   args = {'cd',}, cwd = '/Users/abc/flutter_pj/flutter_ex'},
   { label = 'screen_iching',   args = {'/usr/bin/screen','-R','iching'}, },
   { label = 'screen_trade',   args = {'/usr/bin/screen','-R','trade'}, },
   { label = 'screen_openui',   args = {'/usr/bin/screen','-R','openui'}, },
 }
+local act = wezterm.action
 
+wezterm.on('update-right-status', function(window, pane)
+  window:set_right_status(window:active_workspace())
+end)
+config.keys = {
+  -- 新增workspace and 切换: ctrl+shift+w , ctrl+shift+n
+  {
+    key = 'W',
+    mods = 'CTRL|SHIFT',
+    action = act.PromptInputLine {
+      description = wezterm.format {
+        { Attribute = { Intensity = 'Bold' } },
+        { Foreground = { AnsiColor = 'Fuchsia' } },
+        { Text = 'Enter name for new workspace' },
+      },
+      action = wezterm.action_callback(function(window, pane, line)
+        -- line will be `nil` if they hit escape without entering anything
+        -- An empty string if they just hit enter
+        -- Or the actual line of text they wrote
+        if line then
+          window:perform_action(
+            act.SwitchToWorkspace {
+              name = line,
+            },
+            pane
+          )
+        end
+      end),
+    },
+  },
+  { key = 'N', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(1) },
+  { key = 'P', mods = 'CTRL|SHIFT', action = act.SwitchWorkspaceRelative(-1) },
+  { key = 'w', mods = 'ALT', action = wezterm.action.ShowLauncher },-- 打开launcher
+}
 return config
