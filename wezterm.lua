@@ -4,7 +4,11 @@ local wezterm = require 'wezterm'
 local config = {}
 local platform = require('utils.platform')
 
-local font = 'JetBrainsMono Nerd Font'
+-- local font = 'JetBrainsMono Nerd Font'
+-- local font = wezterm.font_with_fallback({
+-- { family = "JetBrains Mono", scale = 1.24, weight = "Bold" },
+-- { family = "JetBrains Mono Nerd Font", scale = 1.2 },
+-- })
 local font_size = platform().is_mac and 15 or 15
 if wezterm.config_builder then
   c = wezterm.config_builder()
@@ -46,7 +50,7 @@ config.window_frame = {
     -- font_size = fonts.font_size,
 }
 -- tab bar
-config.tab_bar_background = "#ffffff"
+-- config.tab_bar_background = "#ffffff"
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = true
@@ -55,7 +59,14 @@ config.show_tab_index_in_tab_bar = true
 config.switch_to_last_active_tab_when_closing_tab = true
 config.inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 }
 -- 字体
-config.font = wezterm.font(font)
+-- config.font = wezterm.font(font)
+config.font = wezterm.font_with_fallback({
+{ family = "JetBrains Mono", scale = 1.01 , italic = false, weight = "Light" },
+{ family = "Noto Sans CJK SC", scale = 1.01 },
+{ family = "Heiti SC", scale = 1.01 },
+-- MacOS 默认的黑体。或者使用 'Noto Sans CJK SC' 也不错
+})
+
 config.font_size = font_size
 --ref: https://wezfurlong.org/wezterm/config/lua/config/freetype_pcf_long_family_names.html#why-doesnt-wezterm-use-the-distro-freetype-or-match-its-configuration
 config.freetype_load_target = 'Normal' ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
@@ -67,7 +78,7 @@ local wezterm_color = wezterm.color.get_builtin_schemes()['Google (light) (termi
 wezterm_color.scrollbar_thumb = '#cccccc' -- 更明显的滚动条
 -- wezterm_color.background = '#ffffff' -- 自定义背景
 config.colors = wezterm_color
-config.colors_scheme = wezterm_color
+-- config.color_scheme = wezterm_color
 -- 启用滚动条
 config.enable_scroll_bar = true
 -- config.default_cursor_style = "BlinkingBlock"
@@ -80,7 +91,7 @@ config.default_prog = { '/opt/homebrew/bin/fish' }
 -- 启动菜单的一些启动项
 config.launch_menu = {
   -- screen -S 74889 -X quit
-  { label = 'screen_proxy',   args = {'/usr/bin/screen','/opt/homebrew/bin/wstunnel', 'client', '--http-upgrade-path-prefix','h3GywpDrP6gJEdZ6xbJbZZVFmvFZDCa4KcRb','-L', 'socks5://127.0.0.1:10080', 'https://abc.rr.nu:18888',}, },
+  { label = 'screen_proxy',   args = {'/usr/bin/screen','/opt/homebrew/bin/wstunnel', 'client', '--http-upgrade-path-prefix','h3GywpDrP6gJEdZ6xbJbZZVFmvFZDCa4KcRc','-L', 'socks5://127.0.0.1:10080', 'https://iching2.rr.nu:18178',}, },
   { label = 'screen_iching',   args = {'/usr/bin/screen','-R','iching'}, },
   { label = 'screen_trade',   args = {'/usr/bin/screen','-R','trade'}, },
   { label = 'screen_openui',   args = {'/usr/bin/screen','-R','openui'}, },
